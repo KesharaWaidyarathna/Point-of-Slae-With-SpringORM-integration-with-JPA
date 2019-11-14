@@ -1,6 +1,5 @@
 package lk.ijse.dep.pos;
 
-import lk.ijse.dep.pos.db.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

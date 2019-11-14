@@ -7,7 +7,6 @@ package lk.ijse.dep.pos.controller;/*
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -31,8 +30,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dep.pos.db.DBConnection;
-import sun.security.pkcs11.Secmod;
 
 /**
  * FXML Controller class

@@ -1,7 +1,6 @@
 package lk.ijse.dep.pos.dao.custom.impl;
 
 
-import lk.ijse.dep.pos.db.DBConnection;
 import lk.ijse.dep.pos.entity.Gender;
 
 import java.sql.Connection;

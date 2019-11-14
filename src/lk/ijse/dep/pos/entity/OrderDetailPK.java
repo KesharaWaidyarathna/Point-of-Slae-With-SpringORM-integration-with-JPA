@@ -1,6 +1,11 @@
 package lk.ijse.dep.pos.entity;
 
-public class OrderDetailPK {
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
+
+@Embeddable
+public class OrderDetailPK implements Serializable {
 
     private int orderId;
     private String itemCode;

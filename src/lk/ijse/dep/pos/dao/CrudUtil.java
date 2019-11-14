@@ -1,7 +1,5 @@
 package lk.ijse.dep.pos.dao;
 
-import lk.ijse.dep.pos.db.DBConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 

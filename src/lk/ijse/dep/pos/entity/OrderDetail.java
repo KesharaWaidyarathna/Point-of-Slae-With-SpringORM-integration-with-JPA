@@ -1,10 +1,23 @@
 package lk.ijse.dep.pos.entity;
 
+import javax.persistence.*;
+
+@Entity
 public class OrderDetail implements SuperEntity{
 
+    @EmbeddedId
     private OrderDetailPK orderDetailPK;
     private int qty;
     private double unitPrice;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
+            @JoinColumn(name = "order_id",referencedColumnName = "id",updatable = false,insertable = false)
+    private
+    Order order;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
+            @JoinColumn(name = "Item_Id",referencedColumnName = "code",updatable = false,insertable = false)
+    private
+    Item item;
+
 
     public OrderDetail() {
     }
@@ -52,5 +65,21 @@ public class OrderDetail implements SuperEntity{
                 ", qty=" + qty +
                 ", unitPrice=" + unitPrice +
                 '}';
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }
