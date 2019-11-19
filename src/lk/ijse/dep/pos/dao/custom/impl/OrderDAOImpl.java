@@ -12,7 +12,7 @@ public class OrderDAOImpl extends CrudDAOImpl<Order,Integer> implements OrderDAO
     @Override
     public int getLastOrderId() throws Exception {
         Query nativeQuery = entityManager.createNativeQuery("SELECT id FROM `Order` ORDER BY id DESC LIMIT 1");
-        return nativeQuery.getResultList().size()>0? (int) nativeQuery.getSingleResult():null;
+        return nativeQuery.getResultList().size()>0? (int) nativeQuery.getSingleResult():0;
 
     }
 

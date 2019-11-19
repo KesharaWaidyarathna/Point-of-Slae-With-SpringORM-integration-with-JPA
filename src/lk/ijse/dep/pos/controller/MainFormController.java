@@ -30,6 +30,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.dep.pos.db.JPAUtil;
+import static lk.ijse.dep.pos.db.JPAUtil.*;
 
 /**
  * FXML Controller class
@@ -158,11 +160,11 @@ public class MainFormController implements Initializable {
         File file = fileChooser.showOpenDialog(this.root.getScene().getWindow());
         if (file != null) {
             String[] commands;
-            if(DBConnection.password.length()>0) {
-                commands = new String[]{"mysql", "-h", DBConnection.host,"--port", DBConnection.port,"-u", DBConnection.username, "-p" + DBConnection.password, DBConnection.database,
+            if(getPassword().length()>0) {
+                commands = new String[]{"mysql", "-h", getHost(),"--port", getPort(),"-u", getUsername(), "-p" + getPassword(), getDb(),
                         "-e", "source " + file.getAbsolutePath()}; // need a space after "source "}
             }else{
-                commands = new String[]{"mysql", "-h", DBConnection.host,"--port", DBConnection.port, "-u", DBConnection.username,  DBConnection.database,
+                commands = new String[]{"mysql", "-h", getHost(),"--port", getPort(), "-u", getUsername(), getDb(),
                         "-e", "source " + file.getAbsolutePath()}; // need a space after "source "}
             } this.root.getScene().setCursor(Cursor.WAIT);
            pgb.setVisible(true);
@@ -236,7 +238,7 @@ public class MainFormController implements Initializable {
 
                 @Override
                 protected Void call() throws Exception {
-                    Process process = Runtime.getRuntime().exec("mysqldump -h" + DBConnection.host +" --port "+DBConnection.port+ " -u" + DBConnection.username + " -p" + DBConnection.password + " " + DBConnection.database + " --result-file " + file.getAbsolutePath() + ((file.getAbsolutePath().endsWith(".sql")) ? "" : ".sql"));
+                    Process process = Runtime.getRuntime().exec("mysqldump -h" + getHost() +" --port "+getPort()+ " -u" + getUsername() + " -p" + getPassword() + " " + getDb() + " --result-file " + file.getAbsolutePath() + ((file.getAbsolutePath().endsWith(".sql")) ? "" : ".sql"));
                     int exitCode = process.waitFor();
 
                     if(exitCode!=0){
