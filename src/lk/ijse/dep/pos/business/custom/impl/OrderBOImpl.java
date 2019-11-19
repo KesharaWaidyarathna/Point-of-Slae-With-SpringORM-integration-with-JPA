@@ -1,22 +1,19 @@
 package lk.ijse.dep.pos.business.custom.impl;
 
 import lk.ijse.dep.pos.business.custom.OrderBO;
-import lk.ijse.dep.pos.dao.CrudUtil;
 import lk.ijse.dep.pos.dao.DAOFactory;
 import lk.ijse.dep.pos.dao.DAOTypes;
 import lk.ijse.dep.pos.dao.custom.ItemDAO;
 import lk.ijse.dep.pos.dao.custom.OrderDAO;
 import lk.ijse.dep.pos.dao.custom.OrderDetailDAO;
 import lk.ijse.dep.pos.dao.custom.QueryDAO;
+import lk.ijse.dep.pos.db.JPAUtil;
 import lk.ijse.dep.pos.dto.OrderDTO;
 import lk.ijse.dep.pos.dto.OrderDTO2;
 import lk.ijse.dep.pos.dto.OrderDetailDTO;
-import lk.ijse.dep.pos.entity.CustomEntity;
-import lk.ijse.dep.pos.entity.Item;
-import lk.ijse.dep.pos.entity.Order;
-import lk.ijse.dep.pos.entity.OrderDetail;
+import lk.ijse.dep.pos.entity.*;
 
-import java.sql.Connection;
+import javax.persistence.EntityManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,79 +28,56 @@ public class OrderBOImpl implements OrderBO {
 
     @Override
     public int getLastOrderId() throws Exception {
-        return orderDAO.getLastOrderId();
+        EntityManager entityManager = JPAUtil.getEntityManager().createEntityManager();
+        orderDAO.setEntitymanager(entityManager);
+        entityManager.getTransaction().begin();
+        int lastOrderId = orderDAO.getLastOrderId();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return lastOrderId;
     }
 
     @Override
-    public boolean placeOrder(OrderDTO order) throws Exception {
-        Connection connection = DBConnection.getInstance().getConnection();
-        try {
+    public void placeOrder(OrderDTO order) throws Exception {
+        EntityManager entityManager = JPAUtil.getEntityManager().createEntityManager();
+        itemDAO.setEntitymanager(entityManager);
+        orderDAO.setEntitymanager(entityManager);
+        orderDetailDAO.setEntitymanager(entityManager);
+        entityManager.getTransaction().begin();
 
-            // Let's start a transaction
-            connection.setAutoCommit(false);
+        int oId = order.getId();
+        orderDAO.save(new Order(oId, new java.sql.Date(new Date().getTime()),entityManager.getReference(Customer.class,order.getCustomerId())));
 
-            int oId = order.getId();
-            boolean result = orderDAO.save(new Order(oId, new java.sql.Date(new Date().getTime()),
-                    order.getCustomerId()));
 
-            if (!result) {
-                connection.rollback();
-                throw new RuntimeException("Something, something went wrong");
-            }
+        for (OrderDetailDTO orderDetail : order.getOrderDetails()) {
+            orderDetailDAO.save(new OrderDetail(oId, orderDetail.getCode(),
+                    orderDetail.getQty(), orderDetail.getUnitPrice()));
 
-            for (OrderDetailDTO orderDetail : order.getOrderDetails()) {
-                result = orderDetailDAO.save(new OrderDetail(oId, orderDetail.getCode(),
-                        orderDetail.getQty(), orderDetail.getUnitPrice()));
 
-                if (!result) {
-                    connection.rollback();
-                    throw new RuntimeException("Something, something went wrong");
-                }
-
-                Item item = itemDAO.find(orderDetail.getCode());
-                item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getQty());
-                result = itemDAO.update(item);
-
-                if (!result) {
-                    connection.rollback();
-                    throw new RuntimeException("Something, something went wrong");
-                }
-            }
-
-            connection.commit();
-            return true;
-
-        } catch (Throwable e) {
-
-            try {
-                connection.rollback();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Item item = itemDAO.find(orderDetail.getCode());
+            item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getQty());
+            itemDAO.update(item);
         }
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
-    @Override
-    public List<OrderDTO2> getOrderInfo(String query) throws Exception {
-        ResultSet rst = CrudUtil.execute("SELECT O.id, C.customerId, C.name, O.date, SUM(OD.qty * OD.unitPrice) AS Total  FROM Customer C INNER JOIN `Order` O ON C.customerId=O.customerId " +
-                "INNER JOIN OrderDetail OD on O.id = OD.orderId WHERE O.id LIKE ? OR C.customerId LIKE ? OR C.name LIKE ? OR O.date LIKE ? GROUP BY O.id", query, query, query, query);
+        @Override
+        public List<OrderDTO2> getOrderInfo (String query) throws Exception {
+            EntityManager entityManager = JPAUtil.getEntityManager().createEntityManager();
+            queryDAO.setEntitymanager(entityManager);
+            entityManager.getTransaction().begin();
 
-        List<CustomEntity> ordersInfo = queryDAO.getOrdersInfo(query);
+            List<CustomEntity> ordersInfo = queryDAO.getOrdersInfo(query+"%");
+            entityManager.getTransaction().commit();
+            entityManager.close();
 
-        List<OrderDTO2> al = new ArrayList<>();
+            List<OrderDTO2> al = new ArrayList<>();
 
-        for (CustomEntity customEntity : ordersInfo) {
-            al.add(new OrderDTO2(customEntity.getOrderId(),customEntity.getOrderDate(),customEntity.getCustomerId(),customEntity.getCustomerName(),customEntity.getOrderTotal()));
+            for (CustomEntity customEntity : ordersInfo) {
+                al.add(new OrderDTO2(customEntity.getOrderId(), customEntity.getOrderDate(), customEntity.getCustomerId(), customEntity.getCustomerName(), customEntity.getOrderTotal()));
+            }
+
+            return al;
         }
-
-        return al;
     }
-}
