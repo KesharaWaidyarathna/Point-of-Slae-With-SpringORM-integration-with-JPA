@@ -4,10 +4,12 @@ import lk.ijse.dep.pos.dao.CrudDAO;
 import lk.ijse.dep.pos.dao.CrudDAOImpl;
 import lk.ijse.dep.pos.dao.custom.CustomerDAO;
 import lk.ijse.dep.pos.entity.Customer;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Query;
 import java.sql.ResultSet;
 
+@Component
 public class CustomerDAOImpl extends CrudDAOImpl<Customer,String> implements CustomerDAO {
 
     @Override

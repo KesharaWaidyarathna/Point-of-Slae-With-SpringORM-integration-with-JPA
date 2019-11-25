@@ -3,10 +3,12 @@ package lk.ijse.dep.pos.dao.custom.impl;
 import lk.ijse.dep.pos.dao.CrudDAOImpl;
 import lk.ijse.dep.pos.dao.custom.OrderDAO;
 import lk.ijse.dep.pos.entity.Order;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Query;
 import java.sql.ResultSet;
 
+@Component
 public class OrderDAOImpl extends CrudDAOImpl<Order,Integer> implements OrderDAO {
 
     @Override

@@ -2,6 +2,7 @@ package lk.ijse.dep.pos.dao.custom.impl;
 
 import lk.ijse.dep.pos.dao.custom.QueryDAO;
 import lk.ijse.dep.pos.entity.CustomEntity;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -9,6 +10,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class QueryDAOImpl  implements QueryDAO {
 
 private EntityManager entityManager;
