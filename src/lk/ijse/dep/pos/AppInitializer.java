@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import lk.ijse.dep.pos.db.JPAUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.persistence.EntityManagerFactory;
@@ -20,8 +19,7 @@ public class AppInitializer extends Application {
     public static void main(String[] args)
     {
         launch(args);
-        EntityManagerFactory entityManager = JPAUtil.getEntityManager();
-        entityManager.close();
+
     }
 
     @Override

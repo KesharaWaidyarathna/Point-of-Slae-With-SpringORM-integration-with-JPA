@@ -30,8 +30,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.dep.pos.db.JPAUtil;
-import static lk.ijse.dep.pos.db.JPAUtil.*;
+import lk.ijse.dep.pos.AppInitializer;
+
+import lk.ijse.deppo.crypto.DEPCrypt;
+import org.springframework.core.env.Environment;
+
 
 /**
  * FXML Controller class
@@ -51,7 +54,32 @@ public class MainFormController implements Initializable {
     /**
      * Initializes the lk.ijse.dep.pos.controller class.
      */
+
+    private Environment env;
+
+    private   String getUsername() {
+       return DEPCrypt.decode(env.getProperty("javax.persistence.jdbc.user"),"dep4") ;
+    }
+
+
+    private   String getPassword() {
+        return DEPCrypt.decode(env.getProperty("javax.persistence.jdbc.password"),"dep4");
+    }
+
+    private   String getDb() {
+        return env.getRequiredProperty("ijse.dep.db");
+    }
+
+    private  String getPort() {
+       return env.getRequiredProperty("ijse.dep.port");
+    }
+
+    private   String getHost() {
+        return env.getRequiredProperty("ijse.dep.host");
+
+    }
     public void initialize(URL url, ResourceBundle rb) {
+        env= AppInitializer.ctx.getBean(Environment.class);
         FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);

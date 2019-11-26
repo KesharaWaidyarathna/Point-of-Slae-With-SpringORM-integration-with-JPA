@@ -14,10 +14,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+@EnableTransactionManagement
 @PropertySource("file:${user.dir}\\resources\\application.properties")
 @Configuration
 public class JPAConfig {
@@ -30,6 +32,7 @@ public class JPAConfig {
         LocalContainerEntityManagerFactoryBean lcemf = new LocalContainerEntityManagerFactoryBean();
         lcemf.setDataSource(ds);
         lcemf.setJpaVendorAdapter(jpaVendorAdapter);
+        lcemf.setPackagesToScan("lk.ijse.dep.pos.entity");
         return lcemf;
     }
 

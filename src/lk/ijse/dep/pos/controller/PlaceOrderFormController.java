@@ -7,7 +7,6 @@ import lk.ijse.dep.pos.business.custom.OrderBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import lk.ijse.dep.pos.db.JPAUtil;
 import lk.ijse.dep.pos.dto.CustomerDTO;
 import lk.ijse.dep.pos.dto.ItemDTO;
 import lk.ijse.dep.pos.dto.OrderDTO;
@@ -346,7 +345,7 @@ public class PlaceOrderFormController {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/lk/ijse/dep/pos/report/order-report.jasper"));
             Map<String, Object> params = new HashMap<>();
             params.put("orderId", orderId + "");
-            EntityManager entityManager = JPAUtil.getEntityManager().createEntityManager();
+            EntityManager entityManager = AppInitializer.ctx.getBean(EntityManager.class);
             entityManager.unwrap(Session.class).doWork(connection -> {
 
                 JasperPrint jasperPrint = null;

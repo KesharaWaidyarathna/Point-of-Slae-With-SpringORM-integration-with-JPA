@@ -3,22 +3,20 @@ package lk.ijse.dep.pos.dao.custom.impl;
 import lk.ijse.dep.pos.dao.custom.QueryDAO;
 import lk.ijse.dep.pos.entity.CustomEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class QueryDAOImpl  implements QueryDAO {
 
+    @PersistenceContext
 private EntityManager entityManager;
-    @Override
-    public void setEntitymanager(EntityManager entitymanager) {
-        this.entityManager=entitymanager;
-
-    }
 
     @Override
     public CustomEntity getOrderInfo(int orderId) throws Exception {

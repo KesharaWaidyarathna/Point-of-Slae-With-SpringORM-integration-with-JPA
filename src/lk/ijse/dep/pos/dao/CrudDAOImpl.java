@@ -3,12 +3,14 @@ package lk.ijse.dep.pos.dao;
 import lk.ijse.dep.pos.entity.SuperEntity;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public class CrudDAOImpl<T extends SuperEntity, ID extends Serializable> implements CrudDAO<T, ID> {
 
+    @PersistenceContext
     protected EntityManager entityManager;
     private Class<T> entity;
 
@@ -17,10 +19,6 @@ public class CrudDAOImpl<T extends SuperEntity, ID extends Serializable> impleme
         entity=(Class<T>)(((ParameterizedType)(this.getClass().getGenericSuperclass())).getActualTypeArguments()[0]);
     }
 
-    @Override
-    public void setEntitymanager(EntityManager entitymanager) {
-        this.entityManager = entitymanager;
-    }
 
     @Override
     public List<T> findAll() throws Exception {
