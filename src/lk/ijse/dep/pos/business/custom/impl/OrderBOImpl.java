@@ -38,7 +38,6 @@ public class OrderBOImpl implements OrderBO {
         int oId = order.getId();
         orderDAO.save(new Order(oId, new java.sql.Date(new Date().getTime()),customerDAO.find(order.getCustomerId())));
 
-
         for (OrderDetailDTO orderDetail : order.getOrderDetails()) {
             orderDetailDAO.save(new OrderDetail(oId, orderDetail.getCode(),
                     orderDetail.getQty(), orderDetail.getUnitPrice()));

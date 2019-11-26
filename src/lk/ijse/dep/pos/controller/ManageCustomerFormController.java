@@ -113,7 +113,6 @@ public class ManageCustomerFormController implements Initializable {
                         getResourceAsStream("/lk/ijse/dep/pos/report/bean-report.jrxml"));
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-
         Map<String, Object> params = new HashMap<>();
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
                 params, new JRBeanCollectionDataSource(tblCustomers.getItems()));

@@ -40,6 +40,7 @@ import lk.ijse.dep.pos.util.OrderDetailTM;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
@@ -345,7 +346,7 @@ public class PlaceOrderFormController {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/lk/ijse/dep/pos/report/order-report.jasper"));
             Map<String, Object> params = new HashMap<>();
             params.put("orderId", orderId + "");
-            EntityManager entityManager = AppInitializer.ctx.getBean(EntityManager.class);
+            EntityManager entityManager = AppInitializer.ctx.getBean(EntityManagerFactory.class).createEntityManager();
             entityManager.unwrap(Session.class).doWork(connection -> {
 
                 JasperPrint jasperPrint = null;
