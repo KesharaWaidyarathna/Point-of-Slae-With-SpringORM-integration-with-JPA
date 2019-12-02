@@ -26,29 +26,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
-import lk.ijse.dep.pos.db.DB;
-import lk.ijse.dep.pos.db.Order;
-import lk.ijse.dep.pos.db.OrderDetail;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import lk.ijse.dep.pos.util.CustomerTM;
-import lk.ijse.dep.pos.util.OrderTM;
-
-import java.io.IOException;
-import java.net.URL;
-*/
 public class SearchOrdersFormController {
 
     public TextField txtSearch;
@@ -68,31 +45,6 @@ public class SearchOrdersFormController {
 
         loadTable();
 
-       /* for (Order order : DB.orders) {
-            String orderId = order.getOrderId();
-            String orderDate = order.getOrderDate().toString();
-            String customerId = order.getCustomerId();
-            String customerName = null;
-
-            for (CustomerTM customer : DB.customers) {
-                if (customer.getId().equals(customerId)) {
-                    customerName = customer.getName();
-                    break;
-                }
-            }
-
-            double total = 0.0;
-            for (OrderDetail orderDetail : order.getOrderDetails()) {
-                double orderDetailTotal = orderDetail.getQty() * orderDetail.getUnitPrice();
-                total += orderDetailTotal;
-            }
-
-            OrderTM orderTM = new OrderTM(orderId, orderDate, customerId, customerName, total);
-            olOrders.add(orderTM);
-        }
-
-        ObservableList<OrderTM> olAllOrders =
-                FXCollections.observableArrayList(olOrders);*/
 
         txtSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -119,32 +71,6 @@ public class SearchOrdersFormController {
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
     }
-
-   /* public void tblOrders_OnMouseClicked(MouseEvent mouseEvent) throws IOException {
-        if (mouseEvent.getClickCount() == 2) {
-
-            URL resource = this.getClass().getResource("/lk.ijse.dep.pos.view/PlaceOrderForm.fxml");
-            FXMLLoader fxmlLoader = new FXMLLoader(resource);
-            Parent root = fxmlLoader.load();
-            Scene placeOrderScene = new Scene(root);
-            Stage secondaryStage = new Stage();
-            secondaryStage.setScene(placeOrderScene);
-            secondaryStage.centerOnScreen();
-            secondaryStage.setTitle("View Order");
-            secondaryStage.setResizable(false);
-
-            PlaceOrderFormController ctrl = fxmlLoader.getController();
-            OrderTM selectedOrder = tblOrders.getSelectionModel().getSelectedItem();
-            ctrl.initializeForSearchOrderForm(selectedOrder.getOrderId());
-
-            secondaryStage.show();
-        }
-    }*/
-
-    /**
-     *
-     * @throws Exception
-     */
 
 
     public void loadTable() throws Exception {

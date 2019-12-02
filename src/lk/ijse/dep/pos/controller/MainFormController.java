@@ -39,7 +39,8 @@ import org.springframework.core.env.Environment;
 /**
  * FXML Controller class
  *
- * @author ranjith-suranga
+ * @author Keshara waidyrathna
+ *
  */
 public class MainFormController implements Initializable {
 
